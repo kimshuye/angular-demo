@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -8,15 +9,11 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  public products: any[];
+  products: Observable<any[]>;
   
   constructor(private db: AngularFireDatabase) { 
-    db.list<Product>('/products').valueChanges().subscribe(
-      products => {
-        this.products = products;
-        console.log(this.products);
-      }
-    );
+    this.products = db.list<Product>('/products').valueChanges();
+    this.products.subscribe( console.log );    
     
   }
 
